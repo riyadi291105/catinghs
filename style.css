@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+}
+
+.container {
+    max-width: 90%; /* Ubah max-width untuk responsif */
+    margin: 100px auto; /* Gunakan auto untuk center dan margin-top untuk spasi atas */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container label {
+    margin-bottom: 5px;
+}
+
+.inputt {
+    margin-top: 20px; /* Ganti padding-top menjadi margin-top */
+}
+
+#export {
+    margin-left: auto; /* Gunakan auto agar tombol export selalu di kanan */
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%; /* Ubah width agar responsif */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+input[readonly] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.history-container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    max-height: 400px; /* Atur tinggi maksimum kontainer */
+    overflow-y: auto; /* Tambahkan scroll vertikal jika konten melebihi tinggi maksimum */
+}
+
+.history-container h2 {
+    margin-bottom: 10px;
+    height: 20px;
+}
+
+#history-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #003;
+    margin-top: 20px;
+    overflow-x: auto; /* Tambahkan scroll horizontal jika konten melebihi lebar kontainer */
+}
+
+#history-table td {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: center;
+}
+
+#history-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+    border: 1px solid #000;
+}
+
+
