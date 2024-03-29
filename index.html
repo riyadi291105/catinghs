@@ -24,8 +24,8 @@
         </li>
       </ul>
     <div class="container">
-        <label for="cating">Masukkan nilai cating:</label>
-        <input type="number" id="cating" placeholder="Masukkan nilai cating" onkeypress="handleEnter(event)">
+        <label for="cating">qty:</label>
+        <input type="number" id="cating" placeholder="Masukkan nilai cating">
         <label for="hasilC">Produksi:</label>
         <input type="text" id="hasilC" placeholder="produksi" readonly>
         <label for="hasilC1">Modal:</label>
@@ -41,17 +41,14 @@
         <label for="laba">laba dan gaji:</label>
         <input type="text" id="laba" placeholder="laba dan gaji" readonly>
         
-        <button id="hitungButton" onclick="hitung()" >Hitung</button>
+        <button onclick="hitung()">Hitung</button>
     </div>
     
     <div class="history-container">
         <h2>History Hitungan</h2>
-        <div class="inputt">
-            <label for="simpan"></label>
-            <input type="button" id="simpan" value="Simpan" onclick="simpanData()">
-            <input type="button" id="export" value="Export to Excel" onclick="exportToExcel()">
-        </div>
-        
+        <label for="simpan"></label>
+        <input type="button" id="simpan" value="Simpan" onclick="simpanData()">
+        <input type="button" id="export" value="Export to Excel" onclick="exportToExcel()">
         <table id="history-table">
             <thead>
                 <tr>
@@ -71,18 +68,6 @@
     </div>
     
     <script>
-
-         function handleEnter(event) {
-              if (event.key === 'Enter') { // Periksa apakah tombol yang ditekan adalah "Enter"
-            // Dapatkan tombol "Hitung"
-            var hitungButton = document.getElementById("hitungButton");
-            // Panggil fungsi click pada tombol "Hitung" untuk mensimulasikan klik
-            hitungButton.click();
-                     }
-                 }
-
-    
-
         var hitunganHistory = []; // Variabel untuk menyimpan history hitungan
 
         // Nilai tetap untuk hasilCating
@@ -177,7 +162,7 @@
                 pesan += "Laba dan Gaji: " + item.laba + "\n\n";
             });
 
-            var url = "https://wa.me/6287881965963?text=" + encodeURIComponent(pesan);
+            var url = "https://wa.me/6281234567890?text=" + encodeURIComponent(pesan);
             window.open(url, '_blank');
         }
 
@@ -185,77 +170,24 @@
         function exportToExcel() {
     var wb = XLSX.utils.book_new(); // Buat buku baru
 
+    // Tambahkan sheet baru ke buku
+    var ws = XLSX.utils.json_to_sheet(hitunganHistory);
 
-    // Buat array kosong untuk menyimpan data Excel
-    var excelData = [];
+    // Sesuaikan judul kolom
+    ws['A1'] = { v: 'No.', t: 's' };
+    ws['B1'] = { v: 'Cating', t: 's' };
+    ws['C1'] = { v: 'Produksi', t: 's' };
+    ws['D1'] = { v: 'Modal', t: 's' };
+    ws['E1'] = { v: 'Laba', t: 's' };
+    ws['F1'] = { v: 'Gaji Ibu', t: 's' };
+    ws['G1'] = { v: 'Gaji Riyadi', t: 's' };
+    ws['H1'] = { v: 'Laba dan Gaji', t: 's' };
 
-    // Tambahkan header ke data Excel
-    excelData.push(['Tanggal','No.', 'Cating', 'Produksi', 'Modal', 'Laba', 'Gaji Ibu', 'Gaji Riyadi', 'Laba dan Gaji']);
+    // Tambahkan sheet ke buku
+    XLSX.utils.book_append_sheet(wb, ws, "History");
 
-    // Tambahkan setiap item dari hitunganHistory ke data Excel
-   // Tambahkan setiap item dari hitunganHistory ke data Excel
-hitunganHistory.forEach(function(item, index) {
-    var currentTime = new Date(); // Dapatkan waktu saat ini
-    var formattedDate = currentTime.toLocaleDateString(); // Format tanggal ke dalam string
-    var formattedTime = currentTime.toLocaleTimeString(); // Format waktu ke dalam string
-
-    var rowData = [
-        formattedDate + ' ' + formattedTime, // Tambahkan data tanggal dan waktu ke dalam array
-        index + 1,
-        item.cating + " " + 'Pcs',
-        formatRupiah(item.hasilC),
-        formatRupiah(item.hasilC1),
-        formatRupiah(item.labak),
-        formatRupiah(item.gajiIbu),
-        formatRupiah(item.gajiR),
-        formatRupiah(item.laba)
-    ];
-    excelData.push(rowData);
-});
-
-// Tambahkan sheet baru menggunakan data Excel yang sudah disiapkan
-var ws = XLSX.utils.aoa_to_sheet(excelData);
-
-// Atur lebar kolom
-var wscols = [
-    { wch: 25 }, // Kolom untuk data tanggal dan waktu
-    { wch: 5 }, // Kolom No.
-    { wch: 15 }, // Kolom Cating
-    { wch: 15 }, // Kolom Produksi
-    { wch: 15 }, // Kolom Modal
-    { wch: 15 }, // Kolom Laba
-    { wch: 15 }, // Kolom Gaji Ibu
-    { wch: 15 }, // Kolom Gaji Riyadi
-    { wch: 15 }  // Kolom Laba dan Gaji
-];
-ws['!cols'] = wscols;
-
-// Tambahkan border ke setiap sel
-var range = XLSX.utils.decode_range(ws['!ref']);
-for (var R = range.s.r; R <= range.e.r; ++R) {
-    for (var C = range.s.c; C <= range.e.c; ++C) {
-        var cellAddress = {c:C, r:R};
-        var cellRef = XLSX.utils.encode_cell(cellAddress);
-        if(!ws[cellRef]) continue;
-        var cell = ws[cellRef];
-        cell.s = {
-            border: {
-                top: {style: "thin", color: {auto: 1}},
-                bottom: {style: "thin", color: {auto: 1}},
-                left: {style: "thin", color: {auto: 1}},
-                right: {style: "thin", color: {auto: 1}}
-            }
-        };
-    }
-}
-
-
-// Tambahkan sheet ke buku
-XLSX.utils.book_append_sheet(wb, ws, "History");
-
-// Simpan file Excel
-XLSX.writeFile(wb, "P.O.xlsx");
-
+    // Simpan file Excel
+    XLSX.writeFile(wb, "history.xlsx");
 }
 
 
